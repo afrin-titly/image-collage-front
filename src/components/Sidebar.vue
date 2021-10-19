@@ -4,8 +4,8 @@
       <input type="file" multiple @change="onFileChange" ><br><br>
       <div v-if="images">
           <div v-for="(image, index) in images" :key="index">
-              <img :src="image.url" :width="image.width" :height="image.height" v-if="height > 0">
-              {{height}}
+              <img :src="image.url" :width="image.width" :height="image.height" >
+              <button @click="removeImage(index)"> Remove Image </button>
           </div>
       </div>
 
@@ -64,6 +64,9 @@ export default {
 
             })
         },
+        removeImage(index) {
+            this.images.splice(index, 1)
+        }
     }
 }
 </script>
