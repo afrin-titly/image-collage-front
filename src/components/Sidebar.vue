@@ -13,6 +13,10 @@
       <label for="horizontal">Horizontal</label><br>
       <input type="radio" id="vertical" value="vertical" v-model="alignment">
       <label for="css">Vertical</label><br>
+      <label>Border: </label>
+      <input type="text" v-model="border"><br>
+      <label>Color: </label>
+      <input type="text" v-model="color">
       <button type="submit">Make Collage</button>
   </form>
 </template>
@@ -24,13 +28,17 @@ export default {
         return {
             alignment: '',
             images: [],
+            border: 0,
+            color: '',
         }
     },
     methods: {
         submitForm() {
             axios.post("http://localhost:3000/home",
             {images: this.images,
-             alignment: this.alignment}
+             alignment: this.alignment,
+             border: this.border,
+             color: this.color,}
             ).then(reponse=>{
                 console.log(reponse)
             })
