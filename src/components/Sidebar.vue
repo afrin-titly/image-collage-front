@@ -19,6 +19,9 @@
       <input type="text" v-model="color">
       <button type="submit">Make Collage</button>
   </form>
+  <div v-if="image_url">
+      <img :src="image_url">
+  </div>
 </template>
 
 <script>
@@ -30,6 +33,7 @@ export default {
             images: [],
             border: 0,
             color: '',
+            image_url: ''
         }
     },
     methods: {
@@ -39,8 +43,9 @@ export default {
              alignment: this.alignment,
              border: this.border,
              color: this.color,}
-            ).then(reponse=>{
-                console.log(reponse)
+            ).then(response=>{
+                this.image_url = response.data.image
+                console.log(response.data.image)
             })
         },
         onFileChange(e) {
