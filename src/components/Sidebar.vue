@@ -38,8 +38,9 @@ export default {
     },
     methods: {
         submitForm() {
+            const data_image = this.images.map(image=>{return {url: image.url, extention: image.extention}})
             axios.post("http://localhost:3000/home",
-            {images: this.images,
+            {images: data_image,
              alignment: this.alignment,
              border: this.border,
              color: this.color,}
@@ -57,6 +58,7 @@ export default {
         },
         createImage(files) {
             return new Promise((resolve)=>{
+                var i=0;
                 for (var index = 0; index < files.length; index++) {
                     var reader = new FileReader();
                     let imageUrl;
@@ -64,13 +66,14 @@ export default {
                         imageUrl = event.target.result;
                         let image = new Image();
                         image.src = imageUrl;
+                        var image_name = files[i].name.split(".").pop();
                         image.onload = function() {
                             var h = image.height;
                             var w = image.width;
                             var ratio = Math.min(300/w, 200/h);
-
-                            resolve({url: imageUrl, width: w*ratio, height: h*ratio})
+                            resolve({url: imageUrl, width: w*ratio, height: h*ratio, extention: image_name})
                         }
+                        i++;
                     }
                     reader.readAsDataURL(files[index]);
                 }
