@@ -4,7 +4,7 @@
       <input type="file" multiple @change="onFileChange" ><br><br>
       <div v-if="images">
           <div v-for="(image, index) in images" :key="index">
-              <img :src="image.url" :width="image.width" :height="image.height" >
+              <img :src="image.url" :width="image.width" :height="image.height" decoding="async">
               <button @click="removeImage(index)"> Remove Image </button>
           </div>
       </div>
@@ -15,8 +15,11 @@
       <label for="css">Vertical</label><br>
       <label>Border: </label>
       <input type="text" v-model="border"><br>
-      <label>Color: </label>
-      <input type="text" v-model="color">
+      <h1>Color Picker</h1>
+      <label for="colorPicker">Choose a color:</label>
+      <input type="color" v-model="color" ref="colorPicker" @input="pickColor()">
+
+      <label>Color: </label> {{color}} <br>
       <button type="submit">Make Collage</button>
   </form>
   <div v-if="image_url">
@@ -32,7 +35,7 @@ export default {
             alignment: '',
             images: [],
             border: 0,
-            color: '',
+            color: '#e0ffee',
             image_url: ''
         }
     },
@@ -82,11 +85,16 @@ export default {
         },
         removeImage(index) {
             this.images.splice(index, 1)
-        }
+        },
+        pickColor() {
+            this.color = this.$refs["colorPicker"].value;
+        },
     }
 }
 </script>
 
 <style>
-
+input[type="color"] {
+    margin: .4rem;
+}
 </style>
