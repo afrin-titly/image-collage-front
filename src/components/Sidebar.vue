@@ -22,9 +22,15 @@
       <label>Color: </label> {{color}} <br>
       <button type="submit">Make Collage</button>
   </form>
-  <div v-if="image_url">
+  <div v-if="image_url && isLoading == 0">
       <img :src="image_url">
   </div>
+
+  <div v-else-if="isLoading == 1" ref="overlay">
+      <div class="spinner"></div>
+        <br/>
+  </div>
+
 </template>
 
 <script>
@@ -36,11 +42,13 @@ export default {
             images: [],
             border: 0,
             color: '#e0ffee',
-            image_url: ''
+            image_url: '',
+            isLoading: 0,
         }
     },
     methods: {
         submitForm() {
+            this.isLoading = 1
             const data_image = this.images.map(image=>{return {url: image.url, extention: image.extention}})
             axios.post("http://localhost:3000/home",
             {images: data_image,
@@ -50,6 +58,7 @@ export default {
             ).then(response=>{
                 this.image_url = response.data.image
                 console.log(response.data.image)
+                this.isLoading = 0
             })
         },
         onFileChange(e) {
@@ -96,5 +105,41 @@ export default {
 <style>
 input[type="color"] {
     margin: .4rem;
+}
+#overlay {
+  background: #ffffff;
+  color: #666666;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 5000;
+  top: 0;
+  left: 0;
+  float: left;
+  text-align: center;
+  padding-top: 25%;
+  opacity: .80;
+}
+button {
+  margin: 40px;
+  padding: 5px 20px;
+  cursor: pointer;
+}
+.spinner {
+    margin: 0 auto;
+    height: 64px;
+    width: 64px;
+    animation: rotate 0.8s infinite linear;
+    border: 5px solid firebrick;
+    border-right-color: transparent;
+    border-radius: 50%;
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 </style>
