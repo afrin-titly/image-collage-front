@@ -15,7 +15,6 @@
       <label for="css">Vertical</label><br>
       <label>Border: </label>
       <input type="text" v-model="border"><br>
-      <h1>Color Picker</h1>
       <label for="colorPicker">Choose a color:</label>
       <input type="color" v-model="color" ref="colorPicker" @input="pickColor()">
 
@@ -57,6 +56,8 @@ export default {
             ).then(response=>{
                 this.image_url = response.data.image
                 console.log(response.data.image)
+                this.isLoading = 0
+            }).catch(()=>{
                 this.isLoading = 0
             })
         },
