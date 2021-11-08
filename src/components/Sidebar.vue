@@ -22,6 +22,7 @@
       <label>Color: </label> {{color}} <br>
       <button type="submit">Make Collage</button>
   </form>
+  <button @click="clearData()">Clear All</button>
   <div v-if="image_url && isLoading == 0">
       <img :src="image_url">
   </div>
@@ -95,6 +96,14 @@ export default {
         },
         pickColor() {
             this.color = this.$refs["colorPicker"].value;
+        },
+        clearData() {
+            this.alignment =  '',
+            this.images = [],
+            this.border = 0,
+            this.color =  '#e0ffee',
+            this.image_url = '',
+            this.isLoading = 0
         },
     }
 }
