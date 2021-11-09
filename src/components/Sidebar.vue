@@ -48,7 +48,7 @@ export default {
         submitForm() {
             this.isLoading = 1
             const data_image = this.images.map(image=>{return {url: image.url, extention: image.extention}})
-            axios.post("http://localhost:3000/home",
+            axios.post("https://image-collage-back.herokuapp.com",
             {images: data_image,
              alignment: this.alignment,
              border: this.border,
