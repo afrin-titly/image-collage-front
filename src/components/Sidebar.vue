@@ -1,32 +1,43 @@
 <template>
-  <form @submit.prevent="submitForm">
-      <label for="files"> Upload files</label>
-      <input type="file" multiple @change="onFileChange" ><br><br>
-      <div v-if="images">
-          <div v-for="(image, index) in images" :key="index">
-              <img :src="image.url" :width="image.width" :height="image.height" decoding="async">
-              <button @click="removeImage(index)"> Remove Image </button>
+  <div class="container mt-5">
+    <form @submit.prevent="submitForm" >
+      <div>
+        <label for="files"> Upload files</label>
+        <input type="file" multiple @change="onFileChange" class="form-control-file"><br><br>
+        <div v-if="images">
+            <div v-for="(image, index) in images" :key="index">
+                <img class="img-fluid" :src="image.url" :width="image.width" :height="image.height" decoding="async">
+                <button class="btn btn-danger" @click="removeImage(index)"> Remove Image </button>
+            </div>
+        </div>
+        <div class="form-check">
+          <input type="radio" id="horizontal" class="form-check-input" value="horizontal" v-model="alignment">
+          <label for="horizontal">Horizontal</label><br>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" id="vertical" value="vertical" v-model="alignment">
+          <label for="css">Vertical</label><br>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Border: </label>
+            <input type="text" class="form-control" v-model="border"><br>
           </div>
+        </div>
+        <label for="colorPicker">Choose a color:</label>
+        <input type="color" v-model="color" ref="colorPicker" @input="pickColor()">
+
+        <label>Color: </label> {{color}} <br>
+        <button type="submit" class="btn btn-primary">Make Collage</button>
       </div>
+    </form>
+    <button class="btn btn-danger" @click="clearData()">Clear All</button>
+    <div v-if="image_url && isLoading == 0">
+        <img :src="image_url">
+    </div>
 
-      <input type="radio" id="horizontal" value="horizontal" v-model="alignment">
-      <label for="horizontal">Horizontal</label><br>
-      <input type="radio" id="vertical" value="vertical" v-model="alignment">
-      <label for="css">Vertical</label><br>
-      <label>Border: </label>
-      <input type="text" v-model="border"><br>
-      <label for="colorPicker">Choose a color:</label>
-      <input type="color" v-model="color" ref="colorPicker" @input="pickColor()">
-
-      <label>Color: </label> {{color}} <br>
-      <button type="submit">Make Collage</button>
-  </form>
-  <button @click="clearData()">Clear All</button>
-  <div v-if="image_url && isLoading == 0">
-      <img :src="image_url">
-  </div>
-
-  <div v-else-if="isLoading == 1" class="loading">
+    <div v-else-if="isLoading == 1" class="loading">
+    </div>
   </div>
 
 </template>
@@ -47,8 +58,10 @@ export default {
     methods: {
         submitForm() {
             this.isLoading = 1
+            const url = "https://image-collage-back.herokuapp.com/home";
+            // const url = "http://localhost:3000/home";
             const data_image = this.images.map(image=>{return {url: image.url, extention: image.extention}})
-            axios.post("https://image-collage-back.herokuapp.com/home",
+            axios.post(url,
             {images: data_image,
              alignment: this.alignment,
              border: this.border,
@@ -62,6 +75,7 @@ export default {
             })
         },
         onFileChange(e) {
+            console.log(window.location.hostname);
             var files = e.target.files || e.dataTransfer.files; // for drag n drop
             if (!files.length) return;
             this.createImage(e.target.files).then((response)=>{
