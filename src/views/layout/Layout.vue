@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Navbar/>
         <SideBar/>
         <router-view :key="$router.fullPath"></router-view>
     </div>
@@ -7,9 +8,11 @@
 
 <script>
     import SideBar from '../../components/Sidebar.vue'
+    import Navbar from '../../components/Navbar.vue'
     export default {
         components: {
-            SideBar
+            SideBar,
+            Navbar,
         }
     }
 </script>

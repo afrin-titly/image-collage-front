@@ -6,6 +6,7 @@
       <h1 class="text-3xl font-semibold text-gray-700">Sign in</h1>
       <p class="text-gray-500">Sign in to access your account</p>
     </div>
+    <h5>{{flash}}</h5>
     <!-- sign-in -->
     <div class="m-6">
       <form class="mb-4" @submit.prevent="loginSubmit">
@@ -25,6 +26,7 @@
       </form>
     </div>
   </div>
+
 </div>
 </template>
 
@@ -36,7 +38,8 @@
         data() {
             return {
                 username: "",
-                password: ""
+                password: "",
+                flash: "",
             }
         },
         methods: {
@@ -44,9 +47,13 @@
                 let data = {username: this.username, password: this.password}
                 axios.post("http://127.0.0.1:8000/api/token/",data)
                 .then(response=>{
-                    Cookies.set('token', response,data.access)
+                    Cookies.set('token', response.data.access)
                     router.push({path: "/"})
-                    // console.log(response.data)
+                    console.log(response.data)
+                }).catch(error=>{
+                  console.log("-----");
+                  console.log(error.detail)
+                  this.flash = "No active account found with the given credentials."
                 })
             }
         }
