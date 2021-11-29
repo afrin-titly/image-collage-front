@@ -49,9 +49,7 @@
                 .then(response=>{
                     Cookies.set('token', response.data.access)
                     router.push({path: "/"})
-                    console.log(response.data)
                 }).catch(error=>{
-                  console.log("-----");
                   console.log(error.detail)
                   this.flash = "No active account found with the given credentials."
                 })
