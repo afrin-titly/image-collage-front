@@ -58,14 +58,15 @@ export default {
     methods: {
         submitForm() {
             this.isLoading = 1
-            const url = "https://image-collage-back.herokuapp.com/home";
-            // const url = "http://localhost:3000/home";
+            // const url = "https://image-collage-back.herokuapp.com/home";
+            // const url = "http://localhost:3000/home"; //rails
+            const url = "http://127.0.0.1:8000/api/user-image/";
             const data_image = this.images.map(image=>{return {url: image.url, extention: image.extention}})
             axios.post(url,
-            {images: data_image,
-             alignment: this.alignment,
-             border: this.border,
-             color: this.color,}
+              {images: data_image,
+              alignment: this.alignment,
+              border: this.border,
+              color: this.color,}
             ).then(response=>{
                 this.image_url = response.data.image
                 console.log(response.data.image)
