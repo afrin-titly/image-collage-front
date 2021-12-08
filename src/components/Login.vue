@@ -47,7 +47,15 @@
                 let data = {username: this.username, password: this.password}
                 axios.post("http://127.0.0.1:8000/api/token/",data)
                 .then(response=>{
-                    Cookies.set('token', response.data.access)
+                    let jwtToken = response.data.access;
+                    let jwtPayload = jwtToken.split(".")[1];
+                    let jwtDcdd = atob(jwtPayload);
+                    let userInfo = JSON.parse(jwtDcdd);
+
+                    let dat = new Date(parseInt(userInfo.exp) * 1000);
+                    Cookies.set('token', jwtToken,{
+                      expires: dat
+                    })
                     router.push({path: "/"})
                 }).catch(error=>{
                   console.log(error.detail)
