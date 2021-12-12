@@ -10,12 +10,14 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import router from './router'
 import './permission.js'
+import store from './store/index.js'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 // Vue.use(router)
 new Vue({
     el: '#app',
+    store,
     router,
     render: h => h(App)
 })

@@ -32,8 +32,9 @@
 
 <script>
     import router from '../router/index.js'
-    import axios from '../plugins/axios_plugin'
-    import Cookies from 'js-cookie'
+    // import axios from '../plugins/axios_plugin'
+    // import Cookies from 'js-cookie'
+    import { mapActions } from 'vuex'
     export default {
         data() {
             return {
@@ -43,24 +44,13 @@
             }
         },
         methods: {
-            loginSubmit() {
-                let data = {username: this.username, password: this.password}
-                axios.post("http://127.0.0.1:8000/api/token/",data)
-                .then(response=>{
-                    let jwtToken = response.data.access;
-                    let jwtPayload = jwtToken.split(".")[1];
-                    let jwtDcdd = atob(jwtPayload);
-                    let userInfo = JSON.parse(jwtDcdd);
+            ...mapActions(["loginFormSubmit"]),
 
-                    let dat = new Date(parseInt(userInfo.exp) * 1000);
-                    Cookies.set('token', jwtToken,{
-                      expires: dat
-                    })
-                    router.push({path: "/"})
-                }).catch(error=>{
-                  console.log(error.detail)
-                  this.flash = "No active account found with the given credentials."
-                })
+            loginSubmit() {
+              let data = {username: this.username, password: this.password}
+              this.loginFormSubmit(data).then(()=>{
+                router.push({path: "/"})
+              })
             }
         }
     }

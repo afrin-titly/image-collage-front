@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 
 router.beforeEach((to, from, next)=>{
     let token = Cookies.get("token");
+
     if(token) {
         if(to.name == "login"){
             next()
