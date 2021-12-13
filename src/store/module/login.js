@@ -19,7 +19,6 @@ const login = {
     actions: {
 
       loginFormSubmit({commit}, payload) {
-        console.log(payload)
         return new Promise((resolve)=>{
           axios.post("http://127.0.0.1:8000/api/token/",payload)
             .then(response => {

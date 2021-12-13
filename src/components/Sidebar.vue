@@ -59,7 +59,7 @@ export default {
       this.fetchUserImages()
     },
     methods: {
-      // TODO:refactor code. move api request to store
+      // TODO:show images from s3
       ...mapActions(["imageFormSubmit", "fetchUserImages"]),
         submitForm() {
             this.isLoading = 1
@@ -67,7 +67,10 @@ export default {
             // const url = "http://localhost:3000/home"; //rails
             // const url = "http://127.0.0.1:8000/api/user-image/";
             const data_image = this.images.map(image=>{return {url: image.url, extention: image.extention}})
-            this.imageFormSubmit(data_image);
+            console.log(data_image)
+            this.imageFormSubmit(data_image).then(()=>{
+
+            })
             // axios.post(url,
             //   {images: data_image,
             //   alignment: this.alignment,
