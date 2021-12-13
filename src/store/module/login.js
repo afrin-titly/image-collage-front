@@ -4,12 +4,16 @@ import axios from "../../plugins/axios_plugin"
 const login = {
     state: {
         token: Cookies.get("token"),
+        userImages: [],
     },
     mutations: {
       setToken: (state,payload) => {
         state.token = Cookies.set('token', payload.jwtToken,{
               expires: payload.dat
         })
+      },
+      setUserImages: (state) => {
+        state.userImages = []
       }
     },
     actions: {
@@ -36,7 +40,7 @@ const login = {
             this.flash = "No active account found with the given credentials."
           })
         })
-      }
+      },
     }
 }
 

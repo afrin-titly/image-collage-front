@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import axios from "../plugins/axios_plugin"
+import { mapActions } from 'vuex'
 export default {
     data() {
         return {
@@ -55,25 +55,31 @@ export default {
             isLoading: 0,
         }
     },
+    mounted() {
+      this.fetchUserImages()
+    },
     methods: {
+      // TODO:refactor code. move api request to store
+      ...mapActions(["imageFormSubmit", "fetchUserImages"]),
         submitForm() {
             this.isLoading = 1
             // const url = "https://image-collage-back.herokuapp.com/home";
             // const url = "http://localhost:3000/home"; //rails
-            const url = "http://127.0.0.1:8000/api/user-image/";
+            // const url = "http://127.0.0.1:8000/api/user-image/";
             const data_image = this.images.map(image=>{return {url: image.url, extention: image.extention}})
-            axios.post(url,
-              {images: data_image,
-              alignment: this.alignment,
-              border: this.border,
-              color: this.color,}
-            ).then(response=>{
-                this.image_url = response.data.image
-                console.log(response.data.image)
-                this.isLoading = 0
-            }).catch(()=>{
-                this.isLoading = 0
-            })
+            this.imageFormSubmit(data_image);
+            // axios.post(url,
+            //   {images: data_image,
+            //   alignment: this.alignment,
+            //   border: this.border,
+            //   color: this.color,}
+            // ).then(response=>{
+            //     this.image_url = response.data.image
+            //     console.log(response.data.image)
+            //     this.isLoading = 0
+            // }).catch(()=>{
+            //     this.isLoading = 0
+            // })
         },
         onFileChange(e) {
             console.log(window.location.hostname);
