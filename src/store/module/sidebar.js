@@ -2,40 +2,48 @@ import axios from '../../plugins/axios_plugin'
 
 const navbar = {
   state: {
-    allImages: [],
+    imagesURLs: [],
+    dummy: "",
+  },
+  getters: {
+    getUserImageURLs: (state) => {
+      return state.imagesURLs
+    }
   },
   mutations: {
     setAllImages: (state, images) => {
-      state.allImages = images;
+      state.imagesURLs = images;
+    },
+    dummyMutation: (state) => {
+      state.dummy = ""
     }
   },
   actions: {
     imageFormSubmit({commit}, payload) {
-      console.log(payload)
       const url = "http://127.0.0.1:8000/api/user-image/";
       return new Promise((resolve)=>{
         axios.post(url, {images: payload,}
         ).then(response=>{
             resolve(response.data)
-            let image_url = response.data.image
-            // console.log(response.data.image)
-            console.log(response.data)
-            commit('setAllImages', image_url)
+            console.log(response.data.image)
+            commit('dummyMutation')
         }).catch((err)=>{
             console.log(err)
         })
       })
-      // console.log("call collage api")
-      // console.log(payload)
     },
-    fetchUserImages() {
-      console.log("in store----")
+    fetchUserImages({commit}) {
+      return new Promise((resolve)=>{
         axios.get("http://127.0.0.1:8000/api/user-image/")
         .then((response)=>{
-          console.log(response)
+          resolve(response.data)
+          let image_urls = response.data
+          commit('setAllImages', image_urls)
         })
+      })
     }
   }
+
 }
 
 export default navbar

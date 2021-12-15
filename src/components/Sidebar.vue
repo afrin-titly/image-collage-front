@@ -32,18 +32,23 @@
       </div>
     </form>
     <button class="btn btn-danger" @click="clearData()">Clear All</button>
-    <div v-if="image_url && isLoading == 0">
+    <!-- <div v-if="image_url && isLoading == 0">
         <img :src="image_url">
+    </div> -->
+
+    <!-- <div v-else-if="isLoading == 1" class="loading">
+    </div> -->
+    <!-- TODO: image doesn't show after uploading -->
+    <div v-for="(img,index) in getUserImageURLs" :key="index">
+      <img :src="img" width="300" height="150"/>
     </div>
 
-    <div v-else-if="isLoading == 1" class="loading">
-    </div>
   </div>
 
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
     data() {
         return {
@@ -53,10 +58,17 @@ export default {
             color: '#e0ffee',
             image_url: '',
             isLoading: 0,
+            userImages: [],
         }
     },
     mounted() {
-      this.fetchUserImages()
+      this.fetchUserImages().then(()=>{
+        // this.userImages = this.getUserImageURLs()
+      })
+
+    },
+    computed: {
+      ...mapGetters(["getUserImageURLs"]),
     },
     methods: {
       // TODO:show images from s3
