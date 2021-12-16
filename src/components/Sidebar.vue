@@ -39,8 +39,10 @@
     <!-- <div v-else-if="isLoading == 1" class="loading">
     </div> -->
     <!-- TODO: image doesn't show after uploading -->
-    <div v-for="(img,index) in getUserImageURLs" :key="index">
-      <img :src="img" width="300" height="150"/>
+    <div v-if="userImages">
+      <div  v-for="(img,index) in userImages" :key="index">
+        <img :src="img" width="300" height="150" />
+      </div>
     </div>
 
   </div>
@@ -63,7 +65,7 @@ export default {
     },
     mounted() {
       this.fetchUserImages().then(()=>{
-        // this.userImages = this.getUserImageURLs()
+        this.userImages = this.getUserImageURLs
       })
 
     },
@@ -81,20 +83,10 @@ export default {
             const data_image = this.images.map(image=>{return {url: image.url, extention: image.extention}})
             console.log(data_image)
             this.imageFormSubmit(data_image).then(()=>{
-
+              this.fetchUserImages().then(()=>{
+                this.userImages = this.getUserImageURLs
+              })
             })
-            // axios.post(url,
-            //   {images: data_image,
-            //   alignment: this.alignment,
-            //   border: this.border,
-            //   color: this.color,}
-            // ).then(response=>{
-            //     this.image_url = response.data.image
-            //     console.log(response.data.image)
-            //     this.isLoading = 0
-            // }).catch(()=>{
-            //     this.isLoading = 0
-            // })
         },
         onFileChange(e) {
             console.log(window.location.hostname);
