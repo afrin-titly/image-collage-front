@@ -1,4 +1,5 @@
 import axios from '../../plugins/axios_plugin'
+import Cookies from 'js-cookie'
 
 const navbar = {
   state: {
@@ -34,7 +35,12 @@ const navbar = {
     },
     fetchUserImages({commit}) {
       return new Promise((resolve)=>{
-        axios.get("http://127.0.0.1:8000/api/user-image/")
+        axios.get("http://127.0.0.1:8000/api/user-image/",
+        {
+          headers: {
+            'Authorization': 'Bearer '+ Cookies.get("token")  // even though added on axios_plugin why headers was needed?
+          }
+        })
         .then((response)=>{
           resolve(response.data)
           let image_urls = response.data
