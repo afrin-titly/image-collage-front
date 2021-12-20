@@ -30,6 +30,13 @@
         <label>Color: </label> {{color}} <br>
         <button type="submit" class="btn btn-primary">Make Collage</button>
       </div>
+      <!-- TODO: send the selected images to backend -->
+      <div v-if="userImages" class="row">
+        <div  v-for="(img,index) in userImages" :key="index"  class="col-sm">
+          <input type="checkbox" :value="img" v-model="checkedImages" />
+          <img style="object-fit: contain;" :src="img" height="300" width="600" />
+        </div>
+      </div>
     </form>
     <button class="btn btn-danger" @click="clearData()">Clear All</button>
     <!-- <div v-if="image_url && isLoading == 0">
@@ -39,11 +46,6 @@
     <!-- <div v-else-if="isLoading == 1" class="loading">
     </div> -->
     <!-- TODO: image doesn't show after uploading -->
-    <div v-if="userImages">
-      <div  v-for="(img,index) in userImages" :key="index">
-        <img :src="img" width="300" height="150" />
-      </div>
-    </div>
 
   </div>
 
@@ -61,6 +63,7 @@ export default {
             image_url: '',
             isLoading: 0,
             userImages: [],
+            checkedImages: [],
         }
     },
     mounted() {
