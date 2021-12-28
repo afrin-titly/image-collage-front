@@ -28,7 +28,6 @@
         <input type="color" v-model="color" ref="colorPicker" @input="pickColor()">
 
         <label>Color: </label> {{color}} <br>
-        <button type="submit" class="btn btn-primary">Make Collage</button>
       </div>
       <!-- TODO: send the selected images to backend -->
       <div v-if="userImages" class="row">
@@ -37,6 +36,7 @@
           <img style="object-fit: contain;" :src="img" height="300" width="600" />
         </div>
       </div>
+      <button type="submit" class="btn btn-primary">Make Collage</button>
     </form>
     <button class="btn btn-danger" @click="clearData()">Clear All</button>
     <!-- <div v-if="image_url && isLoading == 0">
@@ -76,16 +76,16 @@ export default {
       ...mapGetters(["getUserImageURLs"]),
     },
     methods: {
-      // TODO:show images from s3
       ...mapActions(["imageFormSubmit", "fetchUserImages"]),
         submitForm() {
             this.isLoading = 1
             // const url = "https://image-collage-back.herokuapp.com/home";
             // const url = "http://localhost:3000/home"; //rails
             // const url = "http://127.0.0.1:8000/api/user-image/";
+            const urls = this.getUserImageURLs
             const data_image = this.images.map(image=>{return {url: image.url, extention: image.extention}})
             console.log(data_image)
-            this.imageFormSubmit(data_image).then(()=>{
+            this.imageFormSubmit({data_image,urls}).then(()=>{
               this.fetchUserImages().then(()=>{
                 this.userImages = this.getUserImageURLs
               })

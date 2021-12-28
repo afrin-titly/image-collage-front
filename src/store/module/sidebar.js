@@ -21,9 +21,9 @@ const navbar = {
   },
   actions: {
     imageFormSubmit({commit}, payload) {
-      const url = "http://127.0.0.1:8000/api/user-image/";
+      const api_url = "http://127.0.0.1:8000/api/user-image/";
       return new Promise((resolve)=>{
-        axios.post(url, {images: payload,}
+        axios.post(api_url, {images: payload.data_image, urls: payload.urls}
         ).then(response=>{
             resolve(response.data)
             console.log(response.data.image)
