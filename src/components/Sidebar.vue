@@ -1,37 +1,47 @@
 <template>
   <div class="container mt-5">
-    <form @submit.prevent="submitForm" >
-      <div>
-        <label for="files"> Upload files</label>
-        <input type="file" multiple @change="onFileChange" class="form-control-file"><br><br>
-        <div v-if="images">
-            <div v-for="(image, index) in images" :key="index">
-                <img class="img-fluid" :src="image.url" :width="image.width" :height="image.height" decoding="async">
-                <button class="btn btn-danger" @click="removeImage(index)"> Remove Image </button>
-            </div>
-        </div>
-        <div class="form-check">
-          <input type="radio" id="horizontal" class="form-check-input" value="horizontal" v-model="alignment">
-          <label for="horizontal">Horizontal</label><br>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" id="vertical" value="vertical" v-model="alignment">
-          <label for="css">Vertical</label><br>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label>Border: </label>
-            <input type="text" class="form-control" v-model="border"><br>
-          </div>
-        </div>
-        <label for="colorPicker">Choose a color:</label>
-        <input type="color" v-model="color" ref="colorPicker" @input="pickColor()">
+    <div class="image-area">
+      <div class="image-left-area">
+        <form @submit.prevent="submitForm" >
+          <div>
 
-        <label>Color: </label> {{color}} <br>
-        <button type="submit" class="btn btn-primary">Make Collage</button>
+            <input type="file" id="upload" multiple @change="onFileChange" class="form-control-file"><br><br>
+            <p> Upload files</p>
+
+            <div class="form-check">
+              <input type="radio" id="horizontal" class="form-check-input" value="horizontal" v-model="alignment">
+              <label for="horizontal">Horizontal</label><br>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="vertical" value="vertical" v-model="alignment">
+              <label for="css">Vertical</label><br>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Border: </label>
+                <input type="text" class="form-control" v-model="border"><br>
+              </div>
+            </div>
+            <label for="colorPicker">Choose a color:</label> <br>
+            <input type="color" v-model="color" ref="colorPicker" @input="pickColor()">
+
+            <label>Color: </label> {{color}} <br>
+            <!-- <button type="submit" class="btn btn-primary">Make Collage</button> -->
+          </div>
+        </form>
+
+        <button @click="submitForm" class="btn btn-primary mx-2">Make Collage</button>
+        <button class="btn btn-danger m-2" @click="clearData()">Clear All</button>
       </div>
-    </form>
-    <button class="btn btn-danger" @click="clearData()">Clear All</button>
+
+      <div v-if="images" class="image-right-area">
+        <div class="mb-4" v-for="(image, index) in images" :key="index">
+            <img class="img-fluid" :src="image.url" :width="image.width" :height="image.height" decoding="async"><br>
+            <button class="btn btn-danger p-1 mt-2" @click="removeImage(index)"> Remove Image </button>
+        </div>
+      </div>
+    </div>
+
     <div v-if="image_url && isLoading == 0">
         <img :src="image_url">
     </div>
@@ -53,9 +63,13 @@ export default {
             color: '#e0ffee',
             image_url: '',
             isLoading: 0,
+            showModal: false,
         }
     },
     methods: {
+        test() {
+          console.log("blah ");
+        },
         submitForm() {
             this.isLoading = 1
             const url = "https://image-collage-back.herokuapp.com/home";
@@ -247,4 +261,36 @@ input[type="color"] {
     transform: rotate(360deg);
   }
 }
+
+input::-webkit-file-upload-button {
+  position: absolute;
+  padding: 10px 20px;
+  background-color: peru;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  text-transform: uppercase;
+  box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
+  transition: 100ms ease-out;
+  cursor: pointer;
+}
+
+input::-webkit-file-upload-button:hover {
+  background-color: #bd6e1f;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12)
+}
+
+.image-area {
+  display: flex;
+  padding: 70px;
+}
+.image-left-area {
+  margin: 10px;
+  width: 50%;
+}
+.image-right-area {
+  margin: 10px;
+  width: 50%;
+}
+
 </style>
